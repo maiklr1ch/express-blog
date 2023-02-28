@@ -199,4 +199,4 @@ app.use((req, res) => {
   res.status(404).render(getPath('error.ejs'), { title, errorCode: 404, errorText: "Page not found" });
 });
 
-app.listen(port, 'localhost', (error) => console.log(error ? errorMsg(error) : successMsg(`Listening on port ${port}...`)));
+app.listen(port, (error) => console.log(error ? errorMsg(error) : successMsg(`Listening on port ${port}...`)));
