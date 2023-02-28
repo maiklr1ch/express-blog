@@ -1,0 +1,52 @@
+<%- include('./partials/begin.ejs') %>
+<h1>Contacts:</h1>
+<ul id="contact-list">
+  <p>No contacts</p>
+</ul>
+<h2>Add a contact</h2>
+<form id="add-form">
+  <label for="name">Your name</label>
+  <input type="text" name="name" id="name">
+  <label for="link">Link</label>
+  <input type="url" name="link" id="link">
+  <input id="submit" type="submit" value="CONTACT US">
+</form>
+<script>
+  document.querySelector("#add-form").onsubmit = async (event) => {
+    event.preventDefault();
+    const user = {
+      name: document.querySelector('#name').value,
+      link: document.querySelector('#link').value
+    };
+    document.querySelector('#name').value = '';
+    document.querySelector('#link').value = '';
+    document.querySelector('#submit').disabled = true;
+    document.querySelector('#submit').value = 'ADDING...';1
+    const response = await fetch('/api/contacts', {
+      method: 'post',
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await response.json();
+    document.querySelector('#submit').disabled = false;
+    document.querySelector('#submit').value = 'CONTACT US';
+    if (data) updateContactList();
+  };
+
+  async function updateContactList() {
+    const contactList = document.querySelector('#contact-list');
+    contactList.innerHTML = 'Loading...';
+    const response = await fetch('/api/contacts');
+    const data = await response.json();
+    contactList.innerHTML = '';
+    for (let contact of data) {
+      const linkContent = contact.link ? `<a href="${contact.link}">${contact.name}</a>` : contact.name;
+      contactList.innerHTML += `<li>${linkContent}</li>`;
+    }
+  }
+
+  window.onload = updateContactList;
+</script>
+<%- include('./partials/end.ejs') %>
