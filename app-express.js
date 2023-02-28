@@ -136,7 +136,18 @@
     .findByIdAndDelete(req.params.id)
     .then(data => res.send(data))
     .catch(error => res.status(500).send({ error }));
-  =====================================
+  =========== DOTENV ==============
+  для использования переменных окружения в основной директории проекта создается .env файл с переменными KEY=VALUE
+  для чтения подключается dotenv библиотека и вызывается ее метод config
+  переменные доступны через process.env.{name}::
+  require('dotenv').config();
+  чтобы получить переменную PORT ---> process.env.PORT
+  =========== CHALK ===============
+  для покраски сообщений в консоли используется модуль chalk
+  функции называются так же как и цвета, возвращают текст с измененным цветом::
+  const chalk = require('chalk');
+  console.log(chalk.white.bgGreen(text)) - белые буквы на зеленом фоне
+  =================================
 */
 
 const express = require('express');
@@ -155,6 +166,7 @@ const errorMsg = chalk.bgWhite.bold.redBright;
 const successMsg = chalk.bgGreenBright.bold;
 
 const app = express();
+const port = process.env.PORT || 8000;
 
 mongoose
   .set('strictQuery', true)
@@ -187,4 +199,4 @@ app.use((req, res) => {
   res.status(404).render(getPath('error.ejs'), { title, errorCode: 404, errorText: "Page not found" });
 });
 
-app.listen(process.env.PORT, 'localhost', (error) => console.log(error ? errorMsg(error) : successMsg(`Listening on port ${process.env.PORT}...`)));
+app.listen(port, 'localhost', (error) => console.log(error ? errorMsg(error) : successMsg(`Listening on port ${port}...`)));
