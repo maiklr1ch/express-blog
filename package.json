@@ -13,12 +13,12 @@
     "node": "18.12.1"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node app-express.js",
     "dev": "nodemon app-express"
   },
   "name": "webdev-nodejs",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "app-express.js",
   "directories": {
     "doc": "docs"
   },
